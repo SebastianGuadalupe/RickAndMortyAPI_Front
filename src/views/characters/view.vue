@@ -42,7 +42,7 @@ export default {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({username: this.username, comment: this.comment})
+        body: JSON.stringify({username: this.username, comment: this.comment, characterName: this.character.name})
       });
       const content = await rawResponse.json();
       console.log(content);
