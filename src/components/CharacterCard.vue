@@ -5,14 +5,16 @@ export default {
 </script>
 
 <template>
-  <div class="card">
-    <img v-bind:src=character.image>
-    <h1>{{ character.name }}</h1>
-    <p>Estado: {{ character.status }}</p>
-    <p>Especie: {{ character.species }}</p>
-    <p>Genero: {{ character.gender }}</p>
-    <p>Ubicacion: {{ character.location.name }}</p>
-  </div>
+  <router-link :to="{ name: 'character', params: { id: character.id }}">
+    <div class="card">
+      <img v-bind:src=character.image>
+      <h1>{{ character.name }}</h1>
+      <p>Status: {{ character.status }}</p>
+      <p>Species: {{ character.species }}</p>
+      <p>Gender: {{ character.gender }}</p>
+      <p>Location: {{ character.location.name }}</p>
+    </div>
+  </router-link>
 </template>
 
 <style>
@@ -20,7 +22,6 @@ export default {
   width: 20rem;
   margin: auto;
   padding-bottom: 1rem;
-  margin-bottom: 1rem;
   border: solid 1px;
   border-radius: 5px;
   display: flex;

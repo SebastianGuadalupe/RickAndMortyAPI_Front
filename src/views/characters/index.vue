@@ -20,29 +20,41 @@ export default {
   },
 
   created() {
-    fetch(import.meta.env.VITE_API_ENDPOINT + "/character")
-    .then(response => response.json())
-    .then(characters => {
-      this.characters = characters.results
-    })
+    this.$watch(
+      () => this.$route.params,
+      () => {
+        this.fetchData()
+        this.updateStates()
+      },
+      { immediate: true }
+    )
   },
 
   methods: {
+    updateStates() {
+      this.name = this.$route.query.name || ""
+      this.status = this.$route.query.status || "all"
+      this.species = this.$route.query.species || ""
+      this.gender = this.$route.query.gender || "all"
+    },
+    fetchData() {
+      const params = new URLSearchParams(this.$route.query);
+      fetch(import.meta.env.VITE_API_ENDPOINT + "/character?" + params)
+      .then(response => response.json())
+      .then(characters => {
+        this.characters = characters.results
+      })
+    },
     updateFilter() {
       let values = {}
       values = this.name.trim() !== "" ? {...values, name: this.name.trim()} : values
       values = this.status !== "all" ? {...values, status: this.status} : values
       values = this.species.trim() !== "" ? {...values, species: this.species.trim()} : values
       values = this.gender !== "all" ? {...values, gender: this.gender} : values
-      this.filter = new URLSearchParams(values);
+      this.$router.replace({ path: '/characters', query: values })
 
       
-      fetch(import.meta.env.VITE_API_ENDPOINT + "/character?" + this.filter)
-      .then(response => response.json())
-      .then(characters => {
-        console.log(characters.results);
-        this.characters = characters.results
-      })
+      this.fetchData()
     },
   }
 }
@@ -104,6 +116,7 @@ export default {
 .filter {
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
 }
 .filter div * {
   margin: 1rem;
@@ -116,7 +129,7 @@ export default {
 
 .characters {
   display: grid;
-  gap: .1rem;
+  gap: 1rem;
   grid-template-columns: auto;
 }
 @media (min-width: 768px) {
