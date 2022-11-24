@@ -39,7 +39,7 @@ export default {
     },
     fetchData() {
       const params = new URLSearchParams(this.$route.query);
-      fetch(import.meta.env.VITE_API_ENDPOINT + "/character?" + params)
+      fetch("https://rickandmortyapi.com/api/character?" + params)
       .then(response => response.json())
       .then(characters => {
         this.characters = characters.results

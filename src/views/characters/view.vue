@@ -21,12 +21,12 @@ export default {
     fetchData() {
       this.character = this.comments = null
       this.loading = true
-      fetch(import.meta.env.VITE_API_ENDPOINT + "/character/" + this.$route.params.id)
+      fetch("https://rickandmortyapi.com/api/character/" + this.$route.params.id)
       .then(response => response.json())
       .then(data => {
         this.character = data;
       })
-      fetch(import.meta.env.VITE_BACKEND + "/character/" + this.$route.params.id + "/comments")
+      fetch("http://localhost:6868/character/" + this.$route.params.id + "/comments")
       .then(response => response.json())
       .then(data => {
         this.comments = data;
@@ -36,7 +36,7 @@ export default {
       if (this.username.trim() === "" || this.comment.trim() === "") {
         return
       }
-      const rawResponse = await fetch(import.meta.env.VITE_BACKEND + "/character/" + this.$route.params.id + "/comments", {
+      const rawResponse = await fetch("http://localhost:6868/character/" + this.$route.params.id + "/comments", {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

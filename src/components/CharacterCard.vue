@@ -1,18 +1,36 @@
 <script>
 export default {
-  props: ['character']
+  props: ['character'],
+  data() {
+    return {
+      comments: null,
+    }
+  },
+  created() {
+    this.fetchComments()
+  },
+  methods: {
+    fetchComments() {
+      fetch("http://localhost:6868/character/" + this.character.id + "/comments")
+      .then(response => response.json())
+      .then(data => {
+        this.comments = data;
+      })
+    }
+  }
 }
 </script>
 
 <template>
-  <router-link :to="{ name: 'character', params: { id: character.id }}">
-    <div class="card">
+  <router-link class="card" :to="{ name: 'character', params: { id: character.id }}">
+    <div>
       <img v-bind:src=character.image>
       <h1>{{ character.name }}</h1>
       <p>Status: {{ character.status }}</p>
       <p>Species: {{ character.species }}</p>
       <p>Gender: {{ character.gender }}</p>
       <p>Location: {{ character.location.name }}</p>
+      <p v-if="comments"># of commnts: {{ comments.length }}</p>
     </div>
   </router-link>
 </template>
